@@ -22,9 +22,9 @@ namespace YTMVPN_Server
             int count = authSocket.ReceiveFrom(authBuffer, ref authRemoteEP);
 
             //省略端口复用
+            //省略可靠
             //省略加密
             //省略认证
-
 
 
 
@@ -32,11 +32,14 @@ namespace YTMVPN_Server
             //数据Socket绑定
             Socket dataSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             dataSocket.Bind(new IPEndPoint(IPAddress.Parse(Config.IP_Address), Config.IP_DataPort));
-            byte[] dataBuffer = new byte[4096];
+            byte[] dataBuffer = new byte[4096];  //省略MTU和缓冲区设置
             EndPoint dataRemoteEP = new IPEndPoint(IPAddress.Any, 0);
 
             //接收数据
-            dataSocket.ReceiveFrom(dataBuffer, ref dataRemoteEP);
+            int dataCount = dataSocket.ReceiveFrom(dataBuffer, ref dataRemoteEP);
+
+            //省略对分段包的处理
+            
             
 
 
