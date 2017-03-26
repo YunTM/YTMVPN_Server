@@ -10,5 +10,10 @@ namespace YTMVPN_Server
         public static UInt16 IP_AuthPort;
         public static UInt16 IP_DataPort;
 
+        public static int Logic_AddrLength;
+        public static int Logic_PortLength;
+        public static int Logic_LocalAddr;
+        
+
     }
 }

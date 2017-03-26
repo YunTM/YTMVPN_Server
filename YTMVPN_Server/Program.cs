@@ -39,8 +39,10 @@ namespace YTMVPN_Server
             int dataCount = dataSocket.ReceiveFrom(dataBuffer, ref dataRemoteEP);
 
             //省略对分段包的处理
-            
-            
+
+            LogHelper.Logging("\n接收数据"+
+                              "\n\t大小：" + dataCount +
+                              "\n\t");
 
 
 

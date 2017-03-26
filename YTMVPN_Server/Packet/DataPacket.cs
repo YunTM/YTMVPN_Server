@@ -11,7 +11,8 @@ namespace YTMVPN_Server.Packet
         byte[] dstAddr; //目标地址
         byte[] srcAddr; //源地址
         byte[] payloadData; //载荷数据
-
+        
+        
 
     }
 }
