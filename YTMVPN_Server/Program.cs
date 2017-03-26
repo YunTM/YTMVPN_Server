@@ -21,6 +21,11 @@ namespace YTMVPN_Server
             //接收认证消息
             int count = authSocket.ReceiveFrom(authBuffer, ref authRemoteEP);
 
+            //省略端口复用
+            //省略加密
+            //省略认证
+
+
 
 
 
@@ -32,6 +37,7 @@ namespace YTMVPN_Server
 
             //接收数据
             dataSocket.ReceiveFrom(dataBuffer, ref dataRemoteEP);
+            
 
 
 
