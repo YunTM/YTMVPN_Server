@@ -11,6 +11,13 @@ namespace YTMVPN_Server.Packet
         public int AddrLength { get; set; }
         public int PortLength { get; set; }
 
+        DataPacket(int AddrLength, int PortLength, byte[] rawData = null)
+        {
+            this.AddrLength = AddrLength;
+            this.PortLength = PortLength;
+            this.rawData = RawData;
+        }
+
         //这个包的raw数据
         private byte[] rawData;
         byte[] RawData {
