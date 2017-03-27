@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using YTMVPN_Server.Packet;
+using YTMVPN_Server.Routing;
 
 namespace YTMVPN_Server
 {
@@ -64,8 +65,8 @@ namespace YTMVPN_Server
                               "\n\tPayloadData: " + BitConverter.ToString(dataPacket.PayloadData) +
                               "\n");
 
-            
 
+            RoutingService routingService = new RoutingService();
             while (true)
             {
 
