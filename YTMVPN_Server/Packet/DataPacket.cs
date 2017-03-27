@@ -15,18 +15,27 @@ namespace YTMVPN_Server.Packet
         {
             this.AddrLength = AddrLength;
             this.PortLength = PortLength;
-            this.rawData = RawData;
+            this.rawData = rawData;
+        }
+
+        //构造重载 设置rawData时截取部分长度
+        public DataPacket(int AddrLength, int PortLength, byte[] rawData,int Length)
+        {
+            this.AddrLength = AddrLength;
+            this.PortLength = PortLength;
+            this.rawData = new byte[Length];
+            Buffer.BlockCopy(rawData, 0, this.rawData, 0, Length);
         }
 
         //这个包的raw数据
         private byte[] rawData;
-        byte[] RawData {
+        public byte[] RawData {
             get { return rawData; }
             set { rawData = value; }
         }
 
         //目标地址
-        byte[] DstAddr {
+        public byte[] DstAddr {
             get {
                 byte[] dstAddr = new byte[AddrLength];
                 Buffer.BlockCopy(rawData, 0, dstAddr, 0, dstAddr.Length);
@@ -41,7 +50,7 @@ namespace YTMVPN_Server.Packet
         }
 
         //源地址
-        byte[] SrcAddr
+        public byte[] SrcAddr
         {
             get
             {
@@ -59,7 +68,7 @@ namespace YTMVPN_Server.Packet
         }
 
         //目标端口
-        byte[] DstPort
+        public byte[] DstPort
         {
             get
             {
@@ -77,7 +86,7 @@ namespace YTMVPN_Server.Packet
         }
 
         //源端口
-        Byte[] SrcPort
+        public Byte[] SrcPort
         {
             get
             {
@@ -95,7 +104,7 @@ namespace YTMVPN_Server.Packet
         }
 
         //载荷数据
-        byte[] PayloadData {
+        public byte[] PayloadData {
             get {
                 byte[] payloadData = new byte[rawData.Length - AddrLength * 2 - PortLength * 2];
                 Buffer.BlockCopy(rawData, AddrLength * 2 + PortLength * 2 , payloadData, 0, payloadData.Length);
