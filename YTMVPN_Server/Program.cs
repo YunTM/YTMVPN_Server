@@ -55,16 +55,21 @@ namespace YTMVPN_Server
 
             DataPacket dataPacket =  new DataPacket(Config.Logic_AddrLength, Config.Logic_PortLength, dataBuffer, dataCount);
 
-            LogHelper.Logging("\n接收数据" +
-                              "\n\tSize：" + dataPacket.RawData.Length +
-                              "\n\tDstAddr：" + dataPacket.DstAddr +
-                              "\n\tSrcAddr：" + dataPacket.SrcAddr +
-                              "\n\tDstPort：" + dataPacket.DstPort +
-                              "\n\tSrcPort：" + dataPacket.SrcPort +
-                              "\n\tPayloadData：" + dataPacket.PayloadData.ToString()
-                              );
+            LogHelper.Logging("\nRecvData" +
+                              "\n\tSize: " + dataPacket.RawData.Length +
+                              "\n\tDstAddr: " + BitConverter.ToString(dataPacket.DstAddr) +
+                              "\n\tSrcAddr: " + BitConverter.ToString(dataPacket.SrcAddr) +
+                              "\n\tDstPort: " + BitConverter.ToString(dataPacket.DstPort) +
+                              "\n\tSrcPort: " + BitConverter.ToString(dataPacket.SrcPort) +
+                              "\n\tPayloadData: " + BitConverter.ToString(dataPacket.PayloadData) +
+                              "\n");
 
+            
 
+            while (true)
+            {
+
+            }
 
         }
     }
