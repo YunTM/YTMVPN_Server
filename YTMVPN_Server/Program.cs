@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using YTMVPN_Server.Packet;
 
 namespace YTMVPN_Server
@@ -9,6 +10,9 @@ namespace YTMVPN_Server
     {
         static void Main(string[] args)
         {
+            //设置控制台输出为UTF8
+            Console.OutputEncoding = Encoding.UTF8;
+
             //参数和配置文件的解析 先不写了，参数写死先
             Config.IP_Address = "0.0.0.0";
             Config.IP_AuthPort = 52145;
@@ -49,11 +53,16 @@ namespace YTMVPN_Server
 
             //省略对分段包的处理
 
-            new DataPacket(Config.Logic_AddrLength, Config.Logic_PortLength, dataBuffer);
+            DataPacket dataPacket =  new DataPacket(Config.Logic_AddrLength, Config.Logic_PortLength, dataBuffer, dataCount);
 
-            LogHelper.Logging("\n接收数据"+
-                              "\n\tSize：" + dataCount +
-                              "\n\tSrcAddr：" + dataBuffer.);
+            LogHelper.Logging("\n接收数据" +
+                              "\n\tSize：" + dataPacket.RawData.Length +
+                              "\n\tDstAddr：" + dataPacket.DstAddr +
+                              "\n\tSrcAddr：" + dataPacket.SrcAddr +
+                              "\n\tDstPort：" + dataPacket.DstPort +
+                              "\n\tSrcPort：" + dataPacket.SrcPort +
+                              "\n\tPayloadData：" + dataPacket.PayloadData.ToString()
+                              );
 
 
 
