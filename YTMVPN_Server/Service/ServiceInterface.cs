@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using YTMVPN_Server.Packet;
 
-namespace YTMVPN_Server
+namespace YTMVPN_Server.Service
 {
     public interface ServiceInterface<InputType,OutputType>
     {

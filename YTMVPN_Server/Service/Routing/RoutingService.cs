@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Text;
 using YTMVPN_Server.Packet;
 
-namespace YTMVPN_Server.Routing
+namespace YTMVPN_Server.Service.Routing
 {
     class RoutingService : ServiceInterface<DataPacket, DataPacket>
     {
 
         public RoutingService()
         {
-            status = ""
+            status = "";
+
 
             //IO Queue
             iQueue = new ConcurrentQueue<DataPacket>();
