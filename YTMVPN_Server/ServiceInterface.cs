@@ -12,7 +12,6 @@ namespace YTMVPN_Server
         ConcurrentQueue<InputType> InputQueue { get; }
         ConcurrentQueue<OutputType> OutputQueue { get; }
 
-        void Initialize();
         void StartWork();
         //void StopWork();
         //void Suspend();
