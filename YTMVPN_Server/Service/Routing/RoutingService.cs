@@ -10,21 +10,27 @@ namespace YTMVPN_Server.Service.Routing
     class RoutingService : ServiceInterface<DataPacket, DataPacket>
     {
 
-        public RoutingService()
+        public RoutingService(RoutingTable RoutingTable)
         {
-            status = "";
+            status = ESrvStatus.Initializing;
 
+            this.RoutingTable = RoutingTable;
 
             //IO Queue
             iQueue = new ConcurrentQueue<DataPacket>();
             oQueue = new ConcurrentQueue<DataPacket>();
 
+            
 
         }
 
+        #region RoutingTable
+        public RoutingTable RoutingTable { get; set; }
+        #endregion
+
         #region Status
-        private string status;
-        public string Status { get { return status; } }
+        private ESrvStatus status;
+        public ESrvStatus Status { get { return status; } }
         #endregion
 
         #region IO Queue
@@ -52,7 +58,7 @@ namespace YTMVPN_Server.Service.Routing
                         LogHelper.Logging("RoutingService: Dequeue!");
                         
                         //路由
-                        ConcurrentQueue<DataPacket> oQueue = RoutingTable.GetQueueByAddr(destAddr, destPort);  //!!!注意路由表线程安全
+                        ConcurrentQueue<DataPacket> oQueue = RoutingTable.GetQueueByAddr(dp.DstAddr, dp.DstPort);  //!!!注意路由表线程安全
                         if (oQueue != null)
                         {
                             //交给目标队列
@@ -61,8 +67,7 @@ namespace YTMVPN_Server.Service.Routing
                         else
                         {
                             //查询不到路由 目标不可达
-                            //!!需要端口没有路由的情况
-                            LogHelper.Log("DestAddr Unreachable: " + destAddr + ":" + destPort);  //!!地址格式化
+                            LogHelper.Logging("DestAddr Unreachable: " + dp.DstAddr + ":" + dp.DstPort);  //!!地址格式化
                         }
                     }
 
