@@ -10,7 +10,6 @@ namespace YTMVPN_Server.Service
     {
         String Status { get; }
         ConcurrentQueue<InputType> InputQueue { get; }
-        ConcurrentQueue<OutputType> OutputQueue { get; }
 
         void StartWork();
         //void StopWork();
