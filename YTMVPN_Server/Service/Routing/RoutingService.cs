@@ -14,13 +14,11 @@ namespace YTMVPN_Server.Service.Routing
         {
             status = ESrvStatus.Initializing;
 
+            //路由表 以后要考虑一下多线程 路由表的随时替换
             this.RoutingTable = RoutingTable;
 
-            //IO Queue
+            //InputQueue
             iQueue = new ConcurrentQueue<DataPacket>();
-            oQueue = new ConcurrentQueue<DataPacket>();
-
-            
 
         }
 
@@ -33,11 +31,9 @@ namespace YTMVPN_Server.Service.Routing
         public ESrvStatus Status { get { return status; } }
         #endregion
 
-        #region IO Queue
+        #region InputQueue
         private ConcurrentQueue<DataPacket> iQueue;
-        private ConcurrentQueue<DataPacket> oQueue;
         public ConcurrentQueue<DataPacket> InputQueue { get { return iQueue; } }
-        public ConcurrentQueue<DataPacket> OutputQueue { get { return oQueue; } }
         #endregion
 
         public void StartWork()
