@@ -8,7 +8,7 @@ namespace YTMVPN_Server.Service
     {
         NotInit = 0,
         Initializing = 1,
-        InitializComplet = 2,
+        Initialized = 2,
         Working = 3,
         Stoped = 4,
         Suspended = 5,

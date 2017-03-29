@@ -12,6 +12,7 @@ namespace YTMVPN_Server.Service.Routing
 
         public RoutingService(RoutingTable RoutingTable)
         {
+            //设置状态
             status = ESrvStatus.Initializing;
 
             //路由表 以后要考虑一下多线程 路由表的随时替换
@@ -20,6 +21,8 @@ namespace YTMVPN_Server.Service.Routing
             //InputQueue
             iQueue = new ConcurrentQueue<DataPacket>();
 
+            //设置状态
+            status = ESrvStatus.Initialized;
         }
 
         #region RoutingTable
