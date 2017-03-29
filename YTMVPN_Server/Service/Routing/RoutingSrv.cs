@@ -7,10 +7,10 @@ using YTMVPN_Server.Packet;
 
 namespace YTMVPN_Server.Service.Routing
 {
-    class RoutingService : ServiceInterface<DataPacket, DataPacket>
+    class RoutingSrv : ServiceInterface<DataPacket, DataPacket>
     {
 
-        public RoutingService(RoutingTable RoutingTable)
+        public RoutingSrv(RoutingTable RoutingTable)
         {
             //设置状态
             status = ESrvStatus.Initializing;
@@ -54,7 +54,7 @@ namespace YTMVPN_Server.Service.Routing
                     //尝试从队列取出
                     if (iQueue.TryDequeue(out DataPacket dp))
                     {
-                        LogHelper.Logging("RoutingService: Dequeue!");
+                        LogHelper.Logging("RoutingSrv: Dequeue!");
                         
                         //路由
                         ConcurrentQueue<DataPacket> oQueue = RoutingTable.GetQueueByAddr(dp.DstAddr, dp.DstPort);  //!!!注意路由表线程安全
