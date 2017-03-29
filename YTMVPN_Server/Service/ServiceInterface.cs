@@ -8,7 +8,7 @@ namespace YTMVPN_Server.Service
 {
     public interface ServiceInterface<InputType,OutputType>
     {
-        String Status { get; }
+        ESrvStatus Status { get; }
         ConcurrentQueue<InputType> InputQueue { get; }
 
         void StartWork();

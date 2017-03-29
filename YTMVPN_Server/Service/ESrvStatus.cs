@@ -4,7 +4,7 @@ using System.Text;
 
 namespace YTMVPN_Server.Service
 {
-    enum ESrvStatus
+    public enum ESrvStatus
     {
         NotInit = 0,
         Initializing = 1,
