@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using YTMVPN_Server.Packet;
+using YTMVPN_Server.Service.Echo;
 using YTMVPN_Server.Service.Routing;
 
 namespace YTMVPN_Server
@@ -72,7 +73,7 @@ namespace YTMVPN_Server
 
             //修改路由表
             //同样写死先
-            routingSrv.RoutingTable.Add(new RoutingItem(Config.Logic_LocalAddr,))
+            routingSrv.RoutingTable.Add(new RoutingItem(Config.Logic_LocalAddr, EchoSrv.SrvPool[0].InputQueue));
 
             //启动服务
             routingSrv.StartWork();
