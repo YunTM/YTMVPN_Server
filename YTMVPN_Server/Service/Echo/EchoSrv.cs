@@ -31,6 +31,9 @@ namespace YTMVPN_Server.Service.Echo
             //InputQueue
             iQueue = new ConcurrentQueue<DataPacket>();
 
+            //设置SrvPool
+            SrvPool.Add(this);
+
             //设置状态
             status = ESrvStatus.Initialized;
         }

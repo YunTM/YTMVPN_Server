@@ -70,6 +70,8 @@ namespace YTMVPN_Server
 
             //初始化服务
             RoutingSrv routingSrv = new RoutingSrv(new RoutingTable());
+            EchoSrv echoSrv = new EchoSrv();
+
 
             //修改路由表
             //同样写死先
@@ -77,7 +79,7 @@ namespace YTMVPN_Server
 
             //启动服务
             routingSrv.StartWork();
-
+            echoSrv.StartWork();
 
             //调试循环
             while (true)
