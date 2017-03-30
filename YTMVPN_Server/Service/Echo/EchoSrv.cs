@@ -8,7 +8,7 @@ using YTMVPN_Server.Service.Routing;
 
 namespace YTMVPN_Server.Service.Echo
 {
-    class EchoSrv : IService<DataPacket>
+    public class EchoSrv : IService<DataPacket>
     {
         #region Status
         private ESrvStatus status;
