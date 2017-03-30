@@ -7,7 +7,7 @@ using YTMVPN_Server.Packet;
 
 namespace YTMVPN_Server.Service.Routing
 {
-    class RoutingSrv : ServiceInterface<DataPacket, DataPacket>
+    class RoutingSrv : IService<DataPacket, DataPacket>
     {
 
         public RoutingSrv(RoutingTable RoutingTable)
