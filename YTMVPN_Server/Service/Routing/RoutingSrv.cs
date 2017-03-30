@@ -45,9 +45,9 @@ namespace YTMVPN_Server.Service.Routing
             {
                 throw new Exception("RoutingSrv: Already Working");
             }
-            ThreadPool.QueueUserWorkItem(new WaitCallback(this.DoRecv));
+            ThreadPool.QueueUserWorkItem(new WaitCallback(this.DoWorking));
         }
-        void DoRecv(object args)
+        void DoWorking(object args)
         {
             status = ESrvStatus.Working;
             //大循环
