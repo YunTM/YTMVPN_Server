@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using YTMVPN_Server.Packet;
 using YTMVPN_Server.Service.Routing;
 
@@ -66,10 +67,17 @@ namespace YTMVPN_Server
                               "\n");
 
 
-            RoutingService routingService = new RoutingService();
+            //初始化服务
+            RoutingSrv routingSrv = new RoutingSrv(new RoutingTable());
+
+            //启动服务
+            routingSrv.StartWork();
+
+
+            //调试循环
             while (true)
             {
-
+                Thread.Sleep(100);
             }
 
         }
