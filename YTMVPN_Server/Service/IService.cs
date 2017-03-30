@@ -6,7 +6,7 @@ using YTMVPN_Server.Packet;
 
 namespace YTMVPN_Server.Service
 {
-    public interface IService<InputType,OutputType>
+    public interface IService<InputType>
     {
         ESrvStatus Status { get; }
         ConcurrentQueue<InputType> InputQueue { get; }
