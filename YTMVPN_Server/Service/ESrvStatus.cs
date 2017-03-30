@@ -10,7 +10,8 @@ namespace YTMVPN_Server.Service
         Initializing = 1,
         Initialized = 2,
         Working = 3,
-        Stoped = 4,
-        Suspended = 5,
+        Stoping = 4,
+        Stoped = 5,
+        Suspended = 6,
     }
 }

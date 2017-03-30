@@ -41,12 +41,17 @@ namespace YTMVPN_Server.Service.Routing
 
         public void StartWork()
         {
-            
+            if (status == ESrvStatus.Working)
+            {
+                throw new Exception("RoutingSrv: Already Working");
+            }
+            ThreadPool.QueueUserWorkItem(new WaitCallback(this.DoRecv));
         }
-        void DoRecv()
+        void DoRecv(object args)
         {
+            status = ESrvStatus.Working;
             //大循环
-            while (true)
+            while (status != ESrvStatus.Stoping)
             {
                 //循环直到队列为空，之后线程短暂休眠避免抢占cpu时间
                 while (!iQueue.IsEmpty)
@@ -74,10 +79,7 @@ namespace YTMVPN_Server.Service.Routing
                 //休眠
                 Thread.Sleep(10);
             }
-        }
-        void DoSend()
-        {
-
+            status = ESrvStatus.Stoped;
         }
     }
 }
