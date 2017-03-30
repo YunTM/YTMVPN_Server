@@ -10,6 +10,8 @@ namespace YTMVPN_Server.Service.Echo
 {
     public class EchoSrv : IService<DataPacket>
     {
+        public static List<EchoSrv> SrvPool { get; set; } = new List<EchoSrv>();
+
         #region Status
         private ESrvStatus status;
         public ESrvStatus Status { get { return status; } }
