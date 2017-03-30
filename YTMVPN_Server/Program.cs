@@ -22,7 +22,7 @@ namespace YTMVPN_Server
 
             Config.Logic_AddrLength = 1;
             Config.Logic_PortLength = 1;
-            Config.Logic_LocalAddr = 255;
+            Config.Logic_LocalAddr = new byte[1] { 0xFF };
 
 
             //认证Socket绑定
@@ -69,6 +69,10 @@ namespace YTMVPN_Server
 
             //初始化服务
             RoutingSrv routingSrv = new RoutingSrv(new RoutingTable());
+
+            //修改路由表
+            //同样写死先
+            routingSrv.RoutingTable.Add(new RoutingItem(Config.Logic_LocalAddr,))
 
             //启动服务
             routingSrv.StartWork();

@@ -12,7 +12,7 @@ namespace YTMVPN_Server
 
         public static int Logic_AddrLength;
         public static int Logic_PortLength;
-        public static int Logic_LocalAddr;
+        public static byte[] Logic_LocalAddr;
         
 
     }
