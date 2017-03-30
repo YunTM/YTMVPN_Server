@@ -35,7 +35,15 @@ namespace YTMVPN_Server.Service.Routing
             else
             {
                 //带端口的查询
-                RoutingItem tmp = items.Find(item => item.DstAddr.SequenceEqual(DstAddr) && item.DstPort.SequenceEqual(DstPort));
+                RoutingItem tmp = items.Find(delegate (RoutingItem item)
+                {
+                    if (item.DstPort == null)
+                    {
+                        return false;
+                    }
+                    return item.DstAddr.SequenceEqual(DstAddr) && item.DstPort.SequenceEqual(DstPort);
+                });
+
                 if (tmp != null)
                 {
                     return tmp;
