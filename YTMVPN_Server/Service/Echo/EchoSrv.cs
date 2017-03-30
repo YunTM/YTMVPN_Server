@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using YTMVPN_Server.Packet;
+using YTMVPN_Server.Service.Routing;
 
 namespace YTMVPN_Server.Service.Echo
 {
@@ -53,9 +54,19 @@ namespace YTMVPN_Server.Service.Echo
                     if (iQueue.TryDequeue(out DataPacket dp))
                     {
                         LogHelper.Logging("EchoSrv: Dequeue!");
-                        
+
+                        //交换Src Dst
+                        byte[] swap = dp.DstAddr;
+                        dp.DstAddr = dp.SrcAddr;
+                        dp.SrcAddr = swap;
+                        swap = dp.DstPort;
+                        dp.DstPort = dp.SrcPort;
+                        dp.SrcPort = swap;
+
                         //交给路由队列
-                        .Enqueue(dp);
+                        //先写死用0号服务 反正就是个echo（逃
+                        RoutingSrv.SrvPool[0].InputQueue.Enqueue(dp);
+
                     }
 
                 }

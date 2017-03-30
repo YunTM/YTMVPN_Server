@@ -9,6 +9,7 @@ namespace YTMVPN_Server.Service.Routing
 {
     class RoutingSrv : IService<DataPacket>
     {
+        public static List<RoutingSrv> SrvPool { get; set; } = new List<RoutingSrv>();
 
         public RoutingSrv(RoutingTable RoutingTable)
         {
@@ -20,6 +21,9 @@ namespace YTMVPN_Server.Service.Routing
 
             //InputQueue
             iQueue = new ConcurrentQueue<DataPacket>();
+
+            //设置SrvPool
+            SrvPool.Add(this);
 
             //设置状态
             status = ESrvStatus.Initialized;
