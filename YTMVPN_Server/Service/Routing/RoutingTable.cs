@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using YTMVPN_Server.Packet;
 
@@ -29,12 +30,12 @@ namespace YTMVPN_Server.Service.Routing
             if (DstPort == null)
             {
                 //不带端口的查询
-                return items.Find(item => item.DstAddr == DstAddr);
+                return items.Find(item => item.DstAddr.SequenceEqual(DstAddr));
             }
             else
             {
                 //带端口的查询
-                RoutingItem tmp = items.Find(item => item.DstAddr == DstAddr && item.DstPort == DstPort);
+                RoutingItem tmp = items.Find(item => item.DstAddr.SequenceEqual(DstAddr) && item.DstPort.SequenceEqual(DstPort));
                 if (tmp != null)
                 {
                     return tmp;
@@ -42,7 +43,7 @@ namespace YTMVPN_Server.Service.Routing
                 else
                 {
                     //如果没有找到匹配端口的条目将尝试查找匹配地址的条目
-                    return items.Find(item => item.DstAddr == DstAddr);
+                    return items.Find(item => item.DstAddr.SequenceEqual(DstAddr));
                 }
             }
         }
