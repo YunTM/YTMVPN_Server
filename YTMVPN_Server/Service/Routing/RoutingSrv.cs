@@ -75,7 +75,7 @@ namespace YTMVPN_Server.Service.Routing
                         else
                         {
                             //查询不到路由 目标不可达
-                            LogHelper.Logging("DestAddr Unreachable: " + BitConverter.ToString(dp.DstAddr) + ":" + BitConverter.ToString(dp.DstPort));  //!!地址格式化
+                            LogHelper.Logging("DstAddr Unreachable: " + BitConverter.ToString(dp.DstAddr) + ":" + BitConverter.ToString(dp.DstPort));  //!!地址格式化
                         }
                     }
 
