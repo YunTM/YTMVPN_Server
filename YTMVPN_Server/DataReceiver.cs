@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using YTMVPN_Server.Packet;
 using YTMVPN_Server.Service.Routing;
 
 namespace YTMVPN_Server
@@ -31,12 +32,25 @@ namespace YTMVPN_Server
         {
             while (true)
             {
-                byte[] dataBuffer = new byte[4096];  //省略MTU和缓冲区设置 是的 我也先作死new
-                EndPoint dataRemoteEP = new IPEndPoint(IPAddress.Any, 0);
+                byte[] buffer = new byte[4096];  //省略MTU和缓冲区设置 是的 我也先作死new
+                EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
                 //接收数据
-                int dataCount = dataSocket.ReceiveFrom(dataBuffer, ref dataRemoteEP);
+                int count = dataSocket.ReceiveFrom(buffer, ref remoteEP);
+
+                //省略对分段包的处理
+                DataPacket dp = new DataPacket(Config.Logic_AddrLength, Config.Logic_PortLength, buffer, count);
+                LogHelper.Logging("\nRecvData" +
+                                  "\n\tSize: " + dp.RawData.Length +
+                                  "\n\tDstAddr: " + BitConverter.ToString(dp.DstAddr) +
+                                  "\n\tSrcAddr: " + BitConverter.ToString(dp.SrcAddr) +
+                                  "\n\tDstPort: " + BitConverter.ToString(dp.DstPort) +
+                                  "\n\tSrcPort: " + BitConverter.ToString(dp.SrcPort) +
+                                  "\n\tPayloadData: " + BitConverter.ToString(dp.PayloadData) +
+                                  "\n");
+
                 //丢给路由队列
-                RoutingSrv.SrvPool[0].InputQueue.Enqueue(dp)
+                RoutingSrv.SrvPool[0].InputQueue.Enqueue(dp);
+
             }
         }
     }

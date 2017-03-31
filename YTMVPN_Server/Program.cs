@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using YTMVPN_Server.Packet;
 using YTMVPN_Server.Service.Echo;
+using YTMVPN_Server.Service.Forward;
 using YTMVPN_Server.Service.Routing;
 
 namespace YTMVPN_Server
@@ -27,45 +28,23 @@ namespace YTMVPN_Server
 
 
             //认证Socket绑定
-            Socket authSocket = new Socket(AddressFamily.InterNetwork,SocketType.Dgram,ProtocolType.Udp);
-            authSocket.Bind(new IPEndPoint(IPAddress.Parse(Config.IP_Address), Config.IP_AuthPort));
-            byte[] authBuffer = new byte[4096];
-            EndPoint authRemoteEP = new IPEndPoint(IPAddress.Any,0);
+            //Socket authSocket = new Socket(AddressFamily.InterNetwork,SocketType.Dgram,ProtocolType.Udp);
+            //authSocket.Bind(new IPEndPoint(IPAddress.Parse(Config.IP_Address), Config.IP_AuthPort));
+            //byte[] authBuffer = new byte[4096];
+            //EndPoint authRemoteEP = new IPEndPoint(IPAddress.Any,0);
             
             //省略端口复用
             //省略可靠
             //省略加密
             //省略认证
 
-
-            //数据Socket绑定
-
-
-
-
             //接收认证消息
-            int authCount = authSocket.ReceiveFrom(authBuffer, ref authRemoteEP);
-
-            
-
-            //省略对分段包的处理
-
-            DataPacket dataPacket =  new DataPacket(Config.Logic_AddrLength, Config.Logic_PortLength, dataBuffer, dataCount);
-
-            LogHelper.Logging("\nRecvData" +
-                              "\n\tSize: " + dataPacket.RawData.Length +
-                              "\n\tDstAddr: " + BitConverter.ToString(dataPacket.DstAddr) +
-                              "\n\tSrcAddr: " + BitConverter.ToString(dataPacket.SrcAddr) +
-                              "\n\tDstPort: " + BitConverter.ToString(dataPacket.DstPort) +
-                              "\n\tSrcPort: " + BitConverter.ToString(dataPacket.SrcPort) +
-                              "\n\tPayloadData: " + BitConverter.ToString(dataPacket.PayloadData) +
-                              "\n");
-
+            //int authCount = authSocket.ReceiveFrom(authBuffer, ref authRemoteEP);
 
             //初始化服务
             RoutingSrv routingSrv = new RoutingSrv(new RoutingTable());
+            ForwardSrv forwardSrv = new ForwardSrv()
             EchoSrv echoSrv = new EchoSrv();
-
 
             //修改路由表
             //同样写死先
@@ -75,6 +54,7 @@ namespace YTMVPN_Server
             routingSrv.StartWork();
             echoSrv.StartWork();
 
+            DataReceiver.Start();
             //调试循环
             while (true)
             {
