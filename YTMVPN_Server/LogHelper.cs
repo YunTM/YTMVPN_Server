@@ -4,7 +4,7 @@ using System.Text;
 
 namespace YTMVPN_Server
 {
-    class LogHelper
+    static class LogHelper
     {
         public static void Logging(string str)
         {
