@@ -32,7 +32,7 @@ namespace YTMVPN_Server
             //authSocket.Bind(new IPEndPoint(IPAddress.Parse(Config.IP_Address), Config.IP_AuthPort));
             //byte[] authBuffer = new byte[4096];
             //EndPoint authRemoteEP = new IPEndPoint(IPAddress.Any,0);
-            
+
             //省略端口复用
             //省略可靠
             //省略加密
@@ -43,15 +43,19 @@ namespace YTMVPN_Server
 
             //初始化服务
             RoutingSrv routingSrv = new RoutingSrv(new RoutingTable());
-            ForwardSrv forwardSrv = new ForwardSrv()
+            ForwardSrv forwardSrv = new ForwardSrv(new ForwardTable());
             EchoSrv echoSrv = new EchoSrv();
 
-            //修改路由表
+            //修改路由表和转发表
             //同样写死先
             routingSrv.RoutingTable.Add(new RoutingItem(Config.Logic_LocalAddr, EchoSrv.SrvPool[0].InputQueue));
 
+            routingSrv.RoutingTable.Add(new RoutingItem(new byte[1] { 0x00 }, ForwardSrv.SrvPool[0].InputQueue, new byte[1] { 0x00 }));
+            forwardSrv.ForwardTable.Add(new ForwardItem(new byte[1] { 0x00 }, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 50000), new byte[1]{0x00}));
+
             //启动服务
             routingSrv.StartWork();
+            forwardSrv.StartWork();
             echoSrv.StartWork();
 
             DataReceiver.Start();

@@ -71,7 +71,11 @@ namespace YTMVPN_Server.Service.Forward
                         {
                             //发送数据
                             //省略分段
-                            DataReceiver.DataSocket.SendTo(dp.RawData, remoteEP);
+                            while (true)
+                            {
+                                DataReceiver.DataSocket.SendTo(dp.RawData, remoteEP);
+                                Thread.Sleep(1000);
+                            }
                             
                         }
                         else
