@@ -12,6 +12,8 @@ namespace YTMVPN_Server
     static class DataReceiver
     {
         private static Socket dataSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        public static Socket DataSocket { get; }
+
         private static Thread tWorking = new Thread(Working);
 
         public static void Start()

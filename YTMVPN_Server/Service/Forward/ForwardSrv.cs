@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading;
 using YTMVPN_Server.Packet;
@@ -10,6 +11,8 @@ namespace YTMVPN_Server.Service.Forward
     class ForwardSrv : IService<DataPacket>
     {
         public static List<ForwardSrv> SrvPool { get; set; } = new List<ForwardSrv>();
+
+        public ForwardTable ForwardTable { get; set; }
 
         #region Status
         private ESrvStatus status;
@@ -22,10 +25,13 @@ namespace YTMVPN_Server.Service.Forward
         #endregion
 
 
-        public ForwardSrv()
+        public ForwardSrv(ForwardTable ForwardTable)
         {
             //设置状态
             status = ESrvStatus.Initializing;
+
+            //转发表
+            this.ForwardTable = ForwardTable;
 
             //InputQueue
             iQueue = new ConcurrentQueue<DataPacket>();
@@ -59,8 +65,20 @@ namespace YTMVPN_Server.Service.Forward
                     {
                         LogHelper.Logging("ForwardSrv: Dequeue!");
 
-                        //处理数据发送
-                        
+                        //查转发表
+                        EndPoint remoteEP = ForwardTable.GetEPByAddr(dp.DstAddr, dp.DstPort);  //!!!注意转发表线程安全
+                        if (remoteEP != null)
+                        {
+                            //发送数据
+                            //省略分段
+                            DataReceiver.DataSocket.SendTo(dp.RawData, remoteEP);
+                            
+                        }
+                        else
+                        {
+                            //查询不到EP 目标不可达
+                            LogHelper.Logging("DstAddr Unreachable(EP): " + BitConverter.ToString(dp.DstAddr) + ":" + BitConverter.ToString(dp.DstPort));  //!!地址格式化
+                        }
 
                     }
 

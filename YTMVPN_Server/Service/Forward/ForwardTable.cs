@@ -62,7 +62,7 @@ namespace YTMVPN_Server.Service.Forward
         /// </summary>
         /// <param name="DstAddr">注意：Big Endian字节序</param>
         /// <returns></returns>
-        public EndPoint GetQueueByAddr(byte[] DstAddr, byte[] DstPort = null)
+        public EndPoint GetEPByAddr(byte[] DstAddr, byte[] DstPort = null)
         {
             //注意此函数可能会返回null
             ForwardItem tmp = Query(DstAddr, DstPort);
