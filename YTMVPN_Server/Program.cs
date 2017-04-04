@@ -14,18 +14,11 @@ namespace YTMVPN_Server
     {
         static void Main(string[] args)
         {
+            //config.json
+            Config config = Config.GetConfig();
+
             //设置控制台输出为UTF8
             Console.OutputEncoding = Encoding.UTF8;
-
-            //参数和配置文件的解析 先不写了，参数写死先
-            Config.IP_Address = "0.0.0.0";
-            Config.IP_AuthPort = 52145;
-            Config.IP_DataPort = 52146;
-
-            Config.Logic_AddrLength = 1;
-            Config.Logic_PortLength = 1;
-            Config.Logic_LocalAddr = new byte[1] { 0xFF };
-
 
             //认证Socket绑定
             //Socket authSocket = new Socket(AddressFamily.InterNetwork,SocketType.Dgram,ProtocolType.Udp);

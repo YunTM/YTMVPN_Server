@@ -1,0 +1,8 @@
+{
+  "IP_Address": "0.0.0.0",
+  "IP_AuthPort": 52145,
+  "IP_DataPort": 52146,
+  "Logic_AddrLength": 1,
+  "Logic_PortLength": 1,
+  "Logic_LocalAddr": [255]
+}
