@@ -5,11 +5,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using YTMVPN_Server.Packet;
+using YTMVPN_Server.Service.Forward;
 using YTMVPN_Server.Service.Routing;
 
 namespace YTMVPN_Server
 {
-    static class DataSocket
+    public static class AuthSocket
     {
         private static Config config;
         private static Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -19,7 +20,7 @@ namespace YTMVPN_Server
 
         public static void Start(ref Config config)
         {
-            DataSocket.config = config;
+            AuthSocket.config = config;
             #region 修复bug UDP出现 SocketException 10054
             const uint IOC_IN = 0x80000000;
             int IOC_VENDOR = 0x18000000;
@@ -28,7 +29,7 @@ namespace YTMVPN_Server
             #endregion
 
             //绑定
-            socket.Bind(new IPEndPoint(IPAddress.Parse(config.IP_Address), config.IP_DataPort));
+            socket.Bind(new IPEndPoint(IPAddress.Parse(config.IP_Address), config.IP_AuthPort));
             //懒得写异步，直接丢给线程
             tWorking.IsBackground = true;
             tWorking.Start();
@@ -50,20 +51,37 @@ namespace YTMVPN_Server
                 int count = socket.ReceiveFrom(buffer, ref remoteEP);
 
                 //省略对分段包的处理
-                DataPacket dp = new DataPacket(config.Logic_AddrLength, config.Logic_PortLength, buffer, count);
-                LogHelper.Logging("\nRecvData" +
-                                  "\n\tSize: " + dp.RawData.Length +
-                                  "\n\tDstAddr: " + BitConverter.ToString(dp.DstAddr) +
-                                  "\n\tSrcAddr: " + BitConverter.ToString(dp.SrcAddr) +
-                                  "\n\tDstPort: " + BitConverter.ToString(dp.DstPort) +
-                                  "\n\tSrcPort: " + BitConverter.ToString(dp.SrcPort) +
-                                  "\n\tPayloadData: " + BitConverter.ToString(dp.PayloadData) +
+                AuthPacket ap = new AuthPacket(buffer);
+                
+#if DEBUG
+                LogHelper.Logging("\nRecvAuthPacket" +
+                                  "\n\tSize: " + ap.RawData.Length +
+                                  "\n\tFlag: " + BitConverter.ToString(new byte[] { (byte)ap.Flag }) +
                                   "\n");
+#endif
 
-                //丢给路由队列
-                RoutingSrv.SrvPool[0].InputQueue.Enqueue(dp);
+                //握手
+                switch (ap.Flag)
+                {
+                    case PacketFlags.Hello:
+                        //回应Hello_ACK
+                        ap.Flag = PacketFlags.Hello_ACK;
+                        ap.LogicAddr = config.Logic_LocalAddr;
+                        socket.SendTo(ap.RawData, remoteEP);
+                        break;
+                    case PacketFlags.Hello_Succsss:
+                        //加入转发表 这里还要加判断之前客户端是否有请求 Hello
+                        ForwardSrv.SrvPool[0].ForwardTable.Add(new ForwardItem(ap.LogicAddr, remoteEP));
+                        ap.Flag = PacketFlags.Hello_Done;
+                        socket.SendTo(ap.RawData, remoteEP);
+                        break;
+                    default:
+                        break;
+                }
+
 
             }
         }
     }
 }
+
