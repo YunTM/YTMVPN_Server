@@ -41,7 +41,7 @@ namespace YTMVPN_Server
 
             //修改路由表和转发表
             //同样写死先
-            routingSrv.RoutingTable.Add(new RoutingItem(Config.Logic_LocalAddr, EchoSrv.SrvPool[0].InputQueue));
+            routingSrv.RoutingTable.Add(new RoutingItem(config.Logic_LocalAddr, EchoSrv.SrvPool[0].InputQueue));
 
             routingSrv.RoutingTable.Add(new RoutingItem(new byte[1] { 0x00 }, ForwardSrv.SrvPool[0].InputQueue, new byte[1] { 0x00 }));
             forwardSrv.ForwardTable.Add(new ForwardItem(new byte[1] { 0x00 }, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 50000), new byte[1]{0x00}));
@@ -51,7 +51,7 @@ namespace YTMVPN_Server
             forwardSrv.StartWork();
             echoSrv.StartWork();
 
-            DataReceiver.Start();
+            DataSocket.Start(ref config);
             //调试循环
             while (true)
             {

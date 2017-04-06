@@ -9,23 +9,26 @@ using YTMVPN_Server.Service.Routing;
 
 namespace YTMVPN_Server
 {
-    static class DataReceiver
+    static class DataSocket
     {
-        private static Socket dataSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        public static Socket DataSocket { get { return dataSocket; } }
+        private static Config config;
+        private static Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        public static Socket Socket { get { return socket; } }
 
         private static Thread tWorking = new Thread(Working);
 
-        public static void Start()
+        public static void Start(ref Config config)
         {
-            //修复bug UDP出现 SocketException 10054
+            DataSocket.config = config;
+            #region 修复bug UDP出现 SocketException 10054
             const uint IOC_IN = 0x80000000;
             int IOC_VENDOR = 0x18000000;
             int SIO_UDP_CONNRESET = (int)(IOC_IN | IOC_VENDOR | 12);
-            dataSocket.IOControl((int)SIO_UDP_CONNRESET, new byte[] { Convert.ToByte(false) }, new byte[4]);
+            socket.IOControl((int)SIO_UDP_CONNRESET, new byte[] { Convert.ToByte(false) }, new byte[4]);
+            #endregion
 
             //绑定
-            dataSocket.Bind(new IPEndPoint(IPAddress.Parse(Config.IP_Address), Config.IP_DataPort));
+            socket.Bind(new IPEndPoint(IPAddress.Parse(config.IP_Address), config.IP_DataPort));
             //懒得写异步，直接丢给线程
             tWorking.IsBackground = true;
             tWorking.Start();
@@ -44,10 +47,10 @@ namespace YTMVPN_Server
                 byte[] buffer = new byte[4096];  //省略MTU和缓冲区设置 是的 我也先作死new
                 EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
                 //接收数据
-                int count = dataSocket.ReceiveFrom(buffer, ref remoteEP);
+                int count = socket.ReceiveFrom(buffer, ref remoteEP);
 
                 //省略对分段包的处理
-                DataPacket dp = new DataPacket(Config.Logic_AddrLength, Config.Logic_PortLength, buffer, count);
+                DataPacket dp = new DataPacket(config.Logic_AddrLength, config.Logic_PortLength, buffer, count);
                 LogHelper.Logging("\nRecvData" +
                                   "\n\tSize: " + dp.RawData.Length +
                                   "\n\tDstAddr: " + BitConverter.ToString(dp.DstAddr) +
