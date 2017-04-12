@@ -21,16 +21,16 @@ namespace YTMVPN_Server
             Console.OutputEncoding = Encoding.UTF8;
 
             //初始化服务
-            RoutingSrv routingSrv = new RoutingSrv(new RoutingTable());
-            ForwardSrv forwardSrv = new ForwardSrv(new ForwardTable());
+            RoutingSrv routingSrv = new RoutingSrv();
+            ForwardSrv forwardSrv = new ForwardSrv();
             EchoSrv echoSrv = new EchoSrv();
 
             //路由表 写死
-            routingSrv.RoutingTable.Add(new RoutingItem(config.Logic_LocalAddr, EchoSrv.SrvPool[0].InputQueue));  //地址本地 端口无 Echo服务
-            routingSrv.RoutingTable.Add(new RoutingItem(new byte[1] { 0x00 }, ForwardSrv.SrvPool[0].InputQueue, new byte[1] { 0x00 }));  //地址0x00 端口0x00 Forward服务
+            RoutingSrv.RoutingTable.Add(new RoutingItem(config.Logic_LocalAddr, EchoSrv.SrvPool[0].InputQueue));  //地址本地 端口无 Echo服务
+            RoutingSrv.RoutingTable.Add(new RoutingItem(new byte[1] { 0x00 }, ForwardSrv.SrvPool[0].InputQueue, new byte[1] { 0x00 }));  //地址0x00 端口0x00 Forward服务
             
             //转发表 写死
-            forwardSrv.ForwardTable.Add(new ForwardItem(new byte[1] { 0x00 }, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 50000), new byte[1]{0x00}));  //地址0x00 端口0x00 远程127.0.0.1:50000
+            ForwardSrv.ForwardTable.Add(new ForwardItem(new byte[1] { 0x00 }, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 50000), new byte[1]{0x00}));  //地址0x00 端口0x00 远程127.0.0.1:50000
 
             //启动服务
             routingSrv.StartWork();

@@ -11,13 +11,10 @@ namespace YTMVPN_Server.Service.Routing
     {
         public static List<RoutingSrv> SrvPool { get; set; } = new List<RoutingSrv>();
 
-        public RoutingSrv(RoutingTable RoutingTable)
+        public RoutingSrv()
         {
             //设置状态
             status = ESrvStatus.Initializing;
-
-            //路由表 以后要考虑一下多线程 路由表的随时替换
-            this.RoutingTable = RoutingTable;
 
             //InputQueue
             iQueue = new ConcurrentQueue<DataPacket>();
@@ -30,7 +27,7 @@ namespace YTMVPN_Server.Service.Routing
         }
 
         #region RoutingTable
-        public RoutingTable RoutingTable { get; set; }
+        public static RoutingTable RoutingTable { get; set; }
         #endregion
 
         #region Status

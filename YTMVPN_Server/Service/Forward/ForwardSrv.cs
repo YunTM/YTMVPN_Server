@@ -12,7 +12,7 @@ namespace YTMVPN_Server.Service.Forward
     {
         public static List<ForwardSrv> SrvPool { get; set; } = new List<ForwardSrv>();
 
-        public ForwardTable ForwardTable { get; set; }
+        public static ForwardTable ForwardTable { get; set; }
 
         #region Status
         private ESrvStatus status;
@@ -25,13 +25,10 @@ namespace YTMVPN_Server.Service.Forward
         #endregion
 
 
-        public ForwardSrv(ForwardTable ForwardTable)
+        public ForwardSrv()
         {
             //设置状态
             status = ESrvStatus.Initializing;
-
-            //转发表
-            this.ForwardTable = ForwardTable;
 
             //InputQueue
             iQueue = new ConcurrentQueue<DataPacket>();
