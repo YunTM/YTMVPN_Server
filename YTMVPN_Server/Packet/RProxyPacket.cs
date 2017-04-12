@@ -6,7 +6,10 @@ namespace YTMVPN_Server.Packet
 {
     class RProxyPacket:DataPacket
     {
+        //继承构造函数
         public RProxyPacket(int AddrLength, int PortLength, byte[] rawData, int Length) : base(AddrLength, PortLength, rawData, Length) { }
+
+        #region 依赖RawData的属性
 
         public RProxyPacketState State
         {
@@ -52,5 +55,6 @@ namespace YTMVPN_Server.Packet
                 this.RawData = raw.ToArray();
             }
         }
+        #endregion
     }
 }

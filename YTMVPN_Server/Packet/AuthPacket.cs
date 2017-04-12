@@ -16,6 +16,8 @@ namespace YTMVPN_Server.Packet
             set { rawData = value; }
         }
 
+        #region 依赖rawData的属性
+
         public AuthPacketState State
         {
             get { return (AuthPacketState)rawData[0]; }
@@ -43,7 +45,9 @@ namespace YTMVPN_Server.Packet
                 Buffer.BlockCopy(value, 1, rawData, 0, value.Length);
             }
         }
+        #endregion
 
+        //构造函数
         public AuthPacket(byte[] rawData = null)
         {
             this.rawData = rawData;

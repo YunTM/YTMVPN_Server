@@ -11,6 +11,7 @@ namespace YTMVPN_Server.Packet
         public int AddrLength { get; set; }
         public int PortLength { get; set; }
 
+        #region 构造函数
         public DataPacket(int AddrLength, int PortLength, byte[] rawData = null)
         {
             this.AddrLength = AddrLength;
@@ -26,6 +27,7 @@ namespace YTMVPN_Server.Packet
             this.rawData = new byte[Length];
             Buffer.BlockCopy(rawData, 0, this.rawData, 0, Length);
         }
+        #endregion
 
         //这个包的raw数据
         private byte[] rawData;
@@ -33,6 +35,8 @@ namespace YTMVPN_Server.Packet
             get { return rawData; }
             set { rawData = value; }
         }
+
+        #region 依赖rawData的属性
 
         //目标地址
         public byte[] DstAddr {
@@ -117,6 +121,7 @@ namespace YTMVPN_Server.Packet
                 rawData = raw.ToArray();
             }
         }
+        #endregion
         
         
 

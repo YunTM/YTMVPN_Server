@@ -12,7 +12,16 @@ namespace YTMVPN_Server.Service.RProxy
     {
         public static List<RProxySrv> SrvPool { get; set; } = new List<RProxySrv>();
 
-        public RProxyTable RProxyTable { get; set; }
+        #region SessionTable
+        private SessionTable sessionTable = new SessionTable();
+        public SessionTable SessionTable
+        {
+            get
+            {
+                return sessionTable;
+            }
+        }
+        #endregion
 
         #region Status
         private ESrvStatus status;
@@ -24,14 +33,30 @@ namespace YTMVPN_Server.Service.RProxy
         public ConcurrentQueue<DataPacket> InputQueue { get { return iQueue; } }
         #endregion
 
+        #region ListenPort
 
-        public RProxySrv(RProxyTable RProxyTable)
+        private byte[] listenPort;
+
+        public byte[] ListenPort
+        {
+            get { return listenPort; }
+        }
+        #endregion
+
+        #region DstEP
+        private EndPoint dstEP;
+
+        public EndPoint DstEP
+        {
+            get { return dstEP; }
+        }
+
+        #endregion
+
+        public RProxySrv()
         {
             //设置状态
             status = ESrvStatus.Initializing;
-
-            //转发表
-            this.RProxyTable = RProxyTable;
 
             //InputQueue
             iQueue = new ConcurrentQueue<DataPacket>();
