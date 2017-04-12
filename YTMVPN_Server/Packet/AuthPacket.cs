@@ -16,9 +16,9 @@ namespace YTMVPN_Server.Packet
             set { rawData = value; }
         }
 
-        public PacketState State
+        public AuthPacketState State
         {
-            get { return (PacketState)rawData[0]; }
+            get { return (AuthPacketState)rawData[0]; }
             set { rawData[0] = (byte)value; }
         }
 
@@ -26,7 +26,7 @@ namespace YTMVPN_Server.Packet
         {
             get
             {
-                if (State != PacketState.Hello && State != PacketState.Hello_ACK)
+                if (State != AuthPacketState.Hello && State != AuthPacketState.Hello_ACK)
                 {
                     throw new Exception("Not Hello and Hello_ACK");
                 }
@@ -36,7 +36,7 @@ namespace YTMVPN_Server.Packet
             }
             set
             {
-                if (State != PacketState.Hello && State != PacketState.Hello_ACK)
+                if (State != AuthPacketState.Hello && State != AuthPacketState.Hello_ACK)
                 {
                     throw new Exception("Not Hello and Hello_ACK");
                 }

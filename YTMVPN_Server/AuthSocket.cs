@@ -63,16 +63,16 @@ namespace YTMVPN_Server
                 //握手
                 switch (ap.State)
                 {
-                    case PacketState.Hello:
+                    case AuthPacketState.Hello:
                         //回应Hello_ACK
-                        ap.State = PacketState.Hello_ACK;
+                        ap.State = AuthPacketState.Hello_ACK;
                         ap.LogicAddr = config.Logic_LocalAddr;
                         socket.SendTo(ap.RawData, remoteEP);
                         break;
-                    case PacketState.Hello_Succsss:
+                    case AuthPacketState.Hello_Succsss:
                         //加入转发表 这里还要加判断之前客户端是否有请求 Hello
                         ForwardSrv.SrvPool[0].ForwardTable.Add(new ForwardItem(ap.LogicAddr, remoteEP));
-                        ap.State = PacketState.Hello_Done;
+                        ap.State = AuthPacketState.Hello_Done;
                         socket.SendTo(ap.RawData, remoteEP);
                         break;
                     default:

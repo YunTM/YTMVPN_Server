@@ -111,8 +111,7 @@ namespace YTMVPN_Server.Packet
                 return payloadData;
             }
             set {
-                List<Byte> raw = new List<byte>();
-                raw.AddRange(raw);
+                List<Byte> raw = new List<byte>(rawData);
                 raw.RemoveRange(AddrLength * 2 + PortLength * 2, raw.Count - AddrLength * 2 - PortLength * 2);
                 raw.AddRange(value);
                 rawData = raw.ToArray();
