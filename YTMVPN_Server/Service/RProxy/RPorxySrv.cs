@@ -75,6 +75,7 @@ namespace YTMVPN_Server.Service.RProxy
                 throw new Exception("RProxySrv: Already Working");
             }
             ThreadPool.QueueUserWorkItem(new WaitCallback(this.DoWorking));
+            ThreadPool.QueueUserWorkItem(); //维护会话表
         }
         void DoWorking(object args)
         {
@@ -91,20 +92,21 @@ namespace YTMVPN_Server.Service.RProxy
 #if DEBUG
                         LogHelper.Logging("RProxySrv: Dequeue!");
 #endif
-
-                        //查转发表
-                        EndPoint remoteEP = RProxyTable.GetEPByAddr(dp.DstAddr, dp.DstPort);  //!!!注意转发表线程安全
-                        if (remoteEP != null)
+                        switch (((RProxyPacket)dp).State)
                         {
-                            //发送数据
-                            //省略分段
-                            DataSocket.Socket.SendTo(dp.RawData, remoteEP);
-                            
-                        }
-                        else
-                        {
-                            //查询不到EP 目标不可达
-                            LogHelper.Logging("DstAddr Unreachable(EP): " + BitConverter.ToString(dp.DstAddr) + ":" + BitConverter.ToString(dp.DstPort));  //!!地址格式化
+                            case RProxyPacketState.TCP_Connect:
+                                sessionTable.Add(new SessionItem())
+                                break;
+                            case RProxyPacketState.RProxyPacket:
+                                break;
+                            case RProxyPacketState.TCP_Data:
+                                break;
+                            case RProxyPacketState.TCP_Fin:
+                                break;
+                            case RProxyPacketState.TCP_Rst:
+                                break;
+                            default:
+                                break;
                         }
 
                     }

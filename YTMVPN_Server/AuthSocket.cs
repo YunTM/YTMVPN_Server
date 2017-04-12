@@ -71,11 +71,14 @@ namespace YTMVPN_Server
                         break;
                     case AuthPacketState.Hello_Succsss:
                         //加入转发表 这里还要加判断之前客户端是否有请求 Hello
-                        ForwardSrv.SrvPool[0].ForwardTable.Add(new ForwardItem(ap.LogicAddr, remoteEP));
+                        ForwardSrv.ForwardTable.Add(new ForwardItem(ap.LogicAddr, remoteEP));
                         ap.State = AuthPacketState.Hello_Done;
                         socket.SendTo(ap.RawData, remoteEP);
                         break;
                     default:
+#if DEBUG
+                        LogHelper.Logging("Unknow AuthPacketState");
+#endif
                         break;
                 }
 
