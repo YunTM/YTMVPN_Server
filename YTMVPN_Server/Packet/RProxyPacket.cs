@@ -16,7 +16,8 @@ namespace YTMVPN_Server.Packet
             }
             set
             {
-            } }
+            }
+        }
 
         override public byte[] PayloadData
         {

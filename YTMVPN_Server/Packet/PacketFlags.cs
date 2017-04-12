@@ -4,7 +4,7 @@ using System.Text;
 
 namespace YTMVPN_Server.Packet
 {
-    public enum PacketFlags
+    public enum PacketState
     {
         Hello = 0x00,
         Hello_ACK = 0x01,

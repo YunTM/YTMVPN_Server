@@ -56,23 +56,23 @@ namespace YTMVPN_Server
 #if DEBUG
                 LogHelper.Logging("\nRecvAuthPacket" +
                                   "\n\tSize: " + ap.RawData.Length +
-                                  "\n\tFlag: " + BitConverter.ToString(new byte[] { (byte)ap.Flag }) +
+                                  "\n\tState: " + BitConverter.ToString(new byte[] { (byte)ap.State }) +
                                   "\n");
 #endif
 
                 //握手
-                switch (ap.Flag)
+                switch (ap.State)
                 {
-                    case PacketFlags.Hello:
+                    case PacketState.Hello:
                         //回应Hello_ACK
-                        ap.Flag = PacketFlags.Hello_ACK;
+                        ap.State = PacketState.Hello_ACK;
                         ap.LogicAddr = config.Logic_LocalAddr;
                         socket.SendTo(ap.RawData, remoteEP);
                         break;
-                    case PacketFlags.Hello_Succsss:
+                    case PacketState.Hello_Succsss:
                         //加入转发表 这里还要加判断之前客户端是否有请求 Hello
                         ForwardSrv.SrvPool[0].ForwardTable.Add(new ForwardItem(ap.LogicAddr, remoteEP));
-                        ap.Flag = PacketFlags.Hello_Done;
+                        ap.State = PacketState.Hello_Done;
                         socket.SendTo(ap.RawData, remoteEP);
                         break;
                     default:
