@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using YTMVPN_Server.Packet;
 
-namespace YTMVPN_Server.Service.RProxy
+namespace YTMVPN_Server.Service.Proxy
 {
     class SessionItem
     {

@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading;
 using YTMVPN_Server.Packet;
 
-namespace YTMVPN_Server.Service.RProxy
+namespace YTMVPN_Server.Service.Proxy
 {
-    class RProxySrv : IService<DataPacket>
+    class ProxySrv : IService<DataPacket>
     {
-        public static List<RProxySrv> SrvPool { get; set; } = new List<RProxySrv>();
+        public static List<ProxySrv> SrvPool { get; set; } = new List<ProxySrv>();
 
         #region SessionTable
         private SessionTable sessionTable = new SessionTable();
@@ -53,7 +53,7 @@ namespace YTMVPN_Server.Service.RProxy
 
         #endregion
 
-        public RProxySrv()
+        public ProxySrv()
         {
             //设置状态
             status = ESrvStatus.Initializing;
@@ -72,7 +72,7 @@ namespace YTMVPN_Server.Service.RProxy
         {
             if (status == ESrvStatus.Working)
             {
-                throw new Exception("RProxySrv: Already Working");
+                throw new Exception("ProxySrv: Already Working");
             }
             ThreadPool.QueueUserWorkItem(new WaitCallback(this.DoWorking));
             ThreadPool.QueueUserWorkItem(); //维护会话表
@@ -90,20 +90,21 @@ namespace YTMVPN_Server.Service.RProxy
                     if (iQueue.TryDequeue(out DataPacket dp))
                     {
 #if DEBUG
-                        LogHelper.Logging("RProxySrv: Dequeue!");
+                        LogHelper.Logging("ProxySrv: Dequeue!");
 #endif
-                        switch (((RProxyPacket)dp).State)
+                        switch (((ProxyPacket)dp).State)
                         {
-                            case RProxyPacketState.TCP_Connect:
-                                sessionTable.Add(new SessionItem())
+                            case ProxyPacketState.TCP_Connect:
+                                //握手
+                                sessionTable.Add(new SessionItem());
                                 break;
-                            case RProxyPacketState.RProxyPacket:
+                            case ProxyPacketState.TCP_Connect_Success:
                                 break;
-                            case RProxyPacketState.TCP_Data:
+                            case ProxyPacketState.TCP_Data:
                                 break;
-                            case RProxyPacketState.TCP_Fin:
+                            case ProxyPacketState.TCP_Fin:
                                 break;
-                            case RProxyPacketState.TCP_Rst:
+                            case ProxyPacketState.TCP_Rst:
                                 break;
                             default:
                                 break;

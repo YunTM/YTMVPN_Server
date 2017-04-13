@@ -4,18 +4,18 @@ using System.Text;
 
 namespace YTMVPN_Server.Packet
 {
-    class RProxyPacket:DataPacket
+    class ProxyPacket:DataPacket
     {
         //继承构造函数
-        public RProxyPacket(int AddrLength, int PortLength, byte[] rawData, int Length) : base(AddrLength, PortLength, rawData, Length) { }
+        public ProxyPacket(int AddrLength, int PortLength, byte[] rawData, int Length) : base(AddrLength, PortLength, rawData, Length) { }
 
         #region 依赖RawData的属性
 
-        public RProxyPacketState State
+        public ProxyPacketState State
         {
             get
             {
-                return (RProxyPacketState)this.RawData[this.AddrLength * 2 + this.PortLength * 2];
+                return (ProxyPacketState)this.RawData[this.AddrLength * 2 + this.PortLength * 2];
             }
             set
             {
@@ -39,7 +39,7 @@ namespace YTMVPN_Server.Packet
         {
             get
             {
-                if (State != RProxyPacketState.TCP_Data)
+                if (State != ProxyPacketState.TCP_Data)
                 {
                     throw new Exception("Not TCP_Data");
                 }

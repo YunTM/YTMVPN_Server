@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace YTMVPN_Server.Service.RProxy
+namespace YTMVPN_Server.Service.Proxy
 {
     class SessionTable
     {
